@@ -112,7 +112,15 @@ files at the project root are now thin shims that re-export from the
 `doc_sanitizer` package. Existing scripts importing `import db` or
 `from obfuscator import …` keep working unchanged.
 
-## 9. Things explicitly NOT done
+## 9. Repository visibility
+
+**Public** at the user's request (initially created private as a precaution).
+The release binaries are unsigned but contain no embedded secrets — the master
+key, API token, and self-signed cert are all generated at first run on the
+end-user's machine. No state files are committed; `.gitignore` excludes
+`*.db*`, `master.key`, `api_token`, `tls/`, and the legacy `sanitiser.db.legacy.bak`.
+
+## 10. Things explicitly NOT done
 
 - **No backwards compatibility for the unencrypted DB schema.** The new
   `dictionary` table has different columns (`original_term_enc`, `term_lookup_hash`).
