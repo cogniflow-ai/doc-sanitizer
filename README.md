@@ -146,6 +146,16 @@ All except `/v1/health` require `Authorization: Bearer <token>`.
 
 ---
 
+## Examples
+
+| Path                                              | What                                                                  |
+|---------------------------------------------------|------------------------------------------------------------------------|
+| `clients/library_client_demo.py`                  | In-process `Sanitizer` round-trip on `.md` and `.docx`.               |
+| `clients/https_client_demo.py`                    | End-to-end HTTPS API round-trip; auto-spawns the API server.          |
+| `examples/openai-privacy-filter/opf_demo.py`      | Three OPF use cases incl. **OPF + doc-sanitizer** integration pattern. |
+
+---
+
 ## Migration from the old plaintext DB
 
 If `sanitiser.db` (legacy plaintext) is present in the working directory

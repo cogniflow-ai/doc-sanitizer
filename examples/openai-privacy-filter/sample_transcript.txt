@@ -1,0 +1,12 @@
+[2025-09-12 14:03] AGENT: Hi, you've reached billing — who am I speaking with?
+[2025-09-12 14:03] CALLER: Hi, this is Mario Rossi calling from Acme Corporation.
+[2025-09-12 14:03] AGENT: Hi Mario. What's the issue?
+[2025-09-12 14:04] CALLER: There's a charge on order ORD-90215 I don't recognise.
+              Card ending 4242. Should I read out the full number?
+[2025-09-12 14:04] AGENT: No no, please don't share the full PAN over the line.
+              Can I take an email to send the dispute form?
+[2025-09-12 14:04] CALLER: Sure — mario.rossi@acme.example. Mobile is
+              +39 333 555 7788 if you need to reach me directly.
+[2025-09-12 14:05] AGENT: Got it. I'll send the form to that email within the hour.
+              Anything else, Mario?
+[2025-09-12 14:05] CALLER: That's all for now. Thanks.

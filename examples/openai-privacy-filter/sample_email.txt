@@ -1,0 +1,22 @@
+From: Mario Rossi <mario.rossi@acme.example>
+To: Jane Doe <jane.doe@partner.example>
+Subject: Re: Q3 renewal — order ORD-90215
+Date: 2025-09-12
+
+Hi Jane,
+
+Thanks for the call yesterday. Confirming the renewal terms for Acme
+Corporation: 12 months starting 2025-10-01, billed quarterly to the
+Milan office at Via Roma 12, 20121 Milano.
+
+I'm reachable on +39 02 1234 5678 or my mobile +39 333 555 7788 if
+anything else comes up. The wire details are in the attached PDF; the
+intermediary bank reference is 9928374651.
+
+Best,
+Mario
+
+—
+Mario Rossi
+Account Manager
+Acme Corporation — https://internal.acme.example/team/mrossi
