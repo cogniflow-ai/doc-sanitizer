@@ -1,0 +1,69 @@
+<div id="dictionary-section" class="card sidebar-card">
+
+  <div class="card-title">
+    📖 Dictionary
+    <span class="count-badge">{{ entries | length }}</span>
+  </div>
+
+  <!-- Entry table -->
+  {% if entries %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Original Term</th>
+          <th>Token</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in entries %}
+        <tr>
+          <td>{{ e.original_term }}</td>
+          <td><span class="token">{{ e.token }}</span></td>
+          <td>
+            <button class="btn-danger btn-sm"
+                    hx-post="/dictionary/delete/{{ e.id }}"
+                    hx-target="#dictionary-section"
+                    hx-swap="outerHTML"
+                    hx-confirm="Remove '{{ e.original_term }}' from dictionary?">
+              ✕
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">Dictionary is empty.</p>
+  {% endif %}
+
+  <!-- Add manually -->
+  <form hx-post="/dictionary/add"
+        hx-target="#dictionary-section"
+        hx-swap="outerHTML"
+        style="margin-top:12px">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dict-term">Add term manually</label>
+        <input type="text" id="dict-term" name="term" placeholder="e.g. Acme Corp">
+      </div>
+      <button type="submit" class="btn-primary btn-sm" style="margin-top:20px">Add</button>
+    </div>
+  </form>
+
+  <!-- Import / Export -->
+  <div class="import-export-row">
+    <a href="/dictionary/export" class="btn btn-secondary btn-sm">↓ Export JSON</a>
+    <form hx-post="/dictionary/import"
+          hx-target="#dictionary-section"
+          hx-swap="outerHTML"
+          hx-encoding="multipart/form-data"
+          style="display:flex;gap:6px;align-items:center">
+      <input type="file" name="file" accept=".json" style="font-size:11px;width:auto;flex:1">
+      <button type="submit" class="btn-secondary btn-sm">↑ Import</button>
+    </form>
+  </div>
+
+</div>

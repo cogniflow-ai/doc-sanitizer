@@ -1,0 +1,56 @@
+<div id="candidates-section" class="card">
+  <div class="step-header">
+    <span class="step-num">2</span>
+    <h2>Review Detected Terms</h2>
+  </div>
+
+  {% if candidates %}
+  <p class="hint">
+    <strong>{{ candidates | length }}</strong> candidate(s) found.
+    Edit the term if needed, then <em>Confirm</em> to add to the dictionary or <em>Dismiss</em> to skip.
+  </p>
+
+  <div class="candidates-list">
+    {% for term in candidates %}
+    <div class="candidate-row">
+      <form id="cform-{{ loop.index }}"
+            style="display:contents">
+        <input type="hidden" name="original" value="{{ term }}">
+        <input type="text"   name="term"     value="{{ term }}">
+      </form>
+      <button type="button"
+              class="btn-success btn-sm"
+              hx-post="/detect/confirm"
+              hx-include="#cform-{{ loop.index }}"
+              hx-target="#candidates-section"
+              hx-swap="outerHTML">✓ Confirm</button>
+      <button type="button"
+              class="btn-danger btn-sm"
+              hx-post="/detect/dismiss"
+              hx-include="#cform-{{ loop.index }}"
+              hx-target="#candidates-section"
+              hx-swap="outerHTML">✕</button>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="candidates-empty">
+    ✓ No more candidates — dictionary is up to date.
+  </div>
+  {% endif %}
+
+  <div class="action-row" style="margin-top:16px">
+    <button class="btn-primary"
+            hx-post="/obfuscate"
+            hx-target="#workflow-content"
+            hx-swap="innerHTML"
+            hx-indicator="#obf-spinner">
+      Obfuscate →
+    </button>
+    <span id="obf-spinner" class="htmx-indicator">Obfuscating…</span>
+    {% if filename %}
+    <span class="hint" style="margin-left:auto">{{ filename }}</span>
+    {% endif %}
+  </div>
+</div>

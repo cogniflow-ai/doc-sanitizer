@@ -1,0 +1,149 @@
+<div id="obfuscated-section">
+{% set source_ext = source_ext | default("") %}
+
+  <!-- Step 3: Obfuscated text -->
+  <div class="card">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <h2>Sanitised Text</h2>
+    </div>
+
+    <!-- Search bar (REQ11) -->
+    <div class="search-bar">
+      <form id="search-form" style="display:contents">
+        <input type="text" name="term" id="search-input"
+               placeholder="Search for remaining sensitive terms…">
+      </form>
+      <button type="button"
+              class="btn-secondary btn-sm"
+              hx-post="/search"
+              hx-include="#search-form"
+              hx-target="#text-display"
+              hx-swap="innerHTML">Search</button>
+      <button type="button"
+              class="btn-primary btn-sm"
+              hx-post="/search/add"
+              hx-include="#search-form"
+              hx-target="#workflow-content"
+              hx-swap="innerHTML"
+              title="Add this term to the dictionary and re-run obfuscation">
+        + Add &amp; Re-obfuscate
+      </button>
+    </div>
+
+    <!-- Text display — HTMX search target -->
+    <div class="text-display-wrap">
+      <div id="text-display">
+        <pre>{{ highlighted_text | safe }}</pre>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-row">
+      <a href="/download/sanitised" class="btn btn-primary btn-sm">
+        {% if source_ext in (".docx", ".pptx", ".xlsx") %}
+          ↓ Download {{ source_ext }}
+        {% else %}
+          ↓ Download .txt
+        {% endif %}
+      </a>
+      <button class="btn-secondary btn-sm"
+              hx-post="/obfuscate"
+              hx-target="#workflow-content"
+              hx-swap="innerHTML"
+              title="Re-run obfuscation with the current dictionary">
+        ↻ Re-obfuscate
+      </button>
+    </div>
+    {% if source_ext in (".docx", ".pptx", ".xlsx") %}
+    <p class="hint" style="margin-top:6px">
+      The sanitised <strong>{{ source_ext }}</strong> file preserves the original
+      formatting with sensitive terms replaced by tokens.
+    </p>
+    {% endif %}
+
+    <!-- Save to directory -->
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <form hx-post="/save/sanitised"
+            hx-target="#save-result"
+            hx-swap="innerHTML">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="save-dir">Destination directory</label>
+            <div style="display:flex;gap:6px">
+              <input type="text" id="save-dir" name="directory"
+                     placeholder="Click Browse or type a path…"
+                     style="flex:1">
+              <button type="button"
+                      class="btn-secondary btn-sm"
+                      style="white-space:nowrap;margin-top:0"
+                      hx-post="/browse/directory"
+                      hx-target="#browse-result"
+                      hx-swap="innerHTML">
+                📁 Browse…
+              </button>
+            </div>
+            <div id="browse-result" style="margin-top:4px;min-height:18px"></div>
+          </div>
+          <div class="form-group" style="max-width:180px">
+            <label for="save-fname">Filename</label>
+            <input type="text" id="save-fname" name="save_filename"
+                   placeholder="sanitised.txt">
+          </div>
+          <button type="submit" class="btn-secondary btn-sm" style="margin-top:20px">
+            💾 Save to disk
+          </button>
+        </div>
+      </form>
+      <div id="save-result" style="margin-top:8px"></div>
+    </div>
+
+  </div>
+
+  <!-- Step 4: Rehydrate -->
+  <div class="card" style="margin-top:16px">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <h2>Rehydrate LLM Output</h2>
+    </div>
+    <p class="hint">
+      Paste the LLM-processed text below, or upload a file that contains tokens.
+      Tokens will be replaced with their original values.
+    </p>
+
+    <!-- Option A: paste text -->
+    <details open>
+      <summary class="section-label">Paste text</summary>
+      <form hx-post="/rehydrate/text"
+            hx-target="#rehydration-result"
+            hx-swap="innerHTML"
+            style="margin-top:10px">
+        <textarea name="text" rows="8"
+                  placeholder="Paste LLM output here (containing __TERM_N__ tokens)…"></textarea>
+        <div class="action-row" style="margin-top:8px">
+          <button type="submit" class="btn-primary btn-sm">Rehydrate Text →</button>
+        </div>
+      </form>
+    </details>
+
+    <!-- Option B: upload file -->
+    <details style="margin-top:12px">
+      <summary class="section-label">Upload file</summary>
+      <form hx-post="/rehydrate/file"
+            hx-target="#rehydration-result"
+            hx-swap="innerHTML"
+            hx-encoding="multipart/form-data"
+            style="margin-top:10px">
+        <div class="file-upload-row">
+          <input type="file" name="file"
+                 accept=".docx,.pptx,.xlsx,.txt,.md,.py,.js,.ts,.json,.yaml,.yml,.csv">
+          <button type="submit" class="btn-primary btn-sm">Rehydrate File →</button>
+        </div>
+      </form>
+    </details>
+
+    <!-- Result -->
+    <div id="rehydration-result" style="margin-top:16px"></div>
+  </div>
+
+</div><!-- /obfuscated-section -->

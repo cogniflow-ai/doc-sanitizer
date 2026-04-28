@@ -1,0 +1,10 @@
+{% if term %}
+<p class="search-count">
+  {% if count == 0 %}
+    No matches for <strong>"{{ term }}"</strong>
+  {% else %}
+    <strong>{{ count }}</strong> match{{ 'es' if count != 1 else '' }} for <strong>"{{ term }}"</strong>
+  {% endif %}
+</p>
+{% endif %}
+<pre>{{ highlighted_text | safe }}</pre>

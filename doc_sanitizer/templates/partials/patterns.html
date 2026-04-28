@@ -1,0 +1,66 @@
+<div id="patterns-section" class="card sidebar-card">
+
+  <div class="card-title">
+    🔍 Custom Patterns
+    <span class="count-badge">{{ patterns | length }}</span>
+  </div>
+
+  {% if patterns %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Regex</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in patterns %}
+        <tr>
+          <td>{{ p.name }}</td>
+          <td><code class="regex-code">{{ p.regex }}</code></td>
+          <td>
+            <button class="btn-danger btn-sm"
+                    hx-post="/patterns/delete/{{ p.id }}"
+                    hx-target="#patterns-section"
+                    hx-swap="outerHTML"
+                    hx-confirm="Delete pattern '{{ p.name }}'?">
+              ✕
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">No custom patterns yet.</p>
+  {% endif %}
+
+  <!-- Add pattern form -->
+  <form hx-post="/patterns/add"
+        hx-target="#patterns-section"
+        hx-swap="outerHTML"
+        style="margin-top:12px">
+    <div class="form-group" style="margin-bottom:8px">
+      <label>Pattern name</label>
+      <input type="text" name="name" placeholder="e.g. Internal Project ID">
+    </div>
+    <div class="form-group" style="margin-bottom:8px">
+      <label>Regex</label>
+      <input type="text" name="regex" placeholder="e.g. PRJ-\d{4}" style="font-family:monospace">
+    </div>
+    {% if error %}
+    <div class="error" style="margin-bottom:8px">
+      Regex error: {{ error }}
+    </div>
+    {% endif %}
+    <button type="submit" class="btn-primary btn-sm">Add Pattern</button>
+  </form>
+
+  <p class="hint" style="margin-top:10px">
+    Patterns are validated before saving. Use Python regex syntax.
+  </p>
+
+</div>

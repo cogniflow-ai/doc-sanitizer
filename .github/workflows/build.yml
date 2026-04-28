@@ -1,0 +1,99 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # needed to publish releases on tag push
+
+jobs:
+  test:
+    name: tests (py${{ matrix.python }} on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+      - name: Run tests
+        run: pytest -q
+
+  build:
+    name: build ${{ matrix.target }}
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows-exe
+            artifact: doc-sanitizer.exe
+            artifact_path: dist/doc-sanitizer.exe
+          - os: macos-latest
+            target: macos-app
+            artifact: doc-sanitizer.app
+            artifact_path: dist/doc-sanitizer.app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install (with build deps)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[build]"
+
+      - name: Run PyInstaller
+        run: pyinstaller --noconfirm doc_sanitizer.spec
+
+      - name: Show dist contents
+        shell: bash
+        run: ls -la dist/
+
+      - name: Zip macOS .app
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          cd dist
+          zip -r doc-sanitizer.app.zip doc-sanitizer.app
+
+      - name: Upload artifact (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: ${{ matrix.artifact_path }}
+          if-no-files-found: error
+
+      - name: Upload artifact (macOS)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: dist/doc-sanitizer.app.zip
+          if-no-files-found: error
+
+      - name: Attach to release on tag push
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ runner.os == 'Windows' && 'dist/doc-sanitizer.exe' || 'dist/doc-sanitizer.app.zip' }}

@@ -1,0 +1,58 @@
+# ── critical: never commit local state ──────────────────────────────────────
+# legacy plaintext DB (contains user secrets — migrated on first run, kept as backup)
+sanitiser.db
+sanitiser.db.legacy.bak
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# user-scoped state
+master.key
+api_token
+tls/
+
+# ── python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# distribution / build
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+*.spec
+!doc_sanitizer.spec
+*.manifest
+
+# tests / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# scratch (project-root only)
+/files.zip
+/sanitised.txt
+/obfuscated.html
+/sanitized/

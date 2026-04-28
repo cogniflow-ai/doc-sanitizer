@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Sanitiser</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">🔒 Document Sanitiser</div>
+  <form action="/reset" method="post">
+    <button class="btn-ghost btn-sm">↺ New Session</button>
+  </form>
+</header>
+
+<div class="layout">
+
+  <!-- ── Main workflow column ────────────────────────────────────────── -->
+  <main class="main-col">
+
+    <!-- Step 1: Upload -->
+    <div class="card">
+      <div class="step-header">
+        <span class="step-num">1</span>
+        <h2>Upload Document</h2>
+      </div>
+
+      <form hx-post="/upload"
+            hx-target="#workflow-content"
+            hx-swap="innerHTML"
+            hx-encoding="multipart/form-data"
+            hx-indicator="#upload-spinner">
+        <div class="file-upload-row">
+          <input type="file" name="file"
+                 accept=".docx,.pptx,.xlsx,.txt,.md,.py,.js,.ts,.json,.yaml,.yml,.csv">
+          <button type="submit" class="btn-primary">Upload &amp; Analyse →</button>
+          <span id="upload-spinner" class="htmx-indicator">Analysing…</span>
+        </div>
+      </form>
+
+      {% if state.filename %}
+      <p class="current-file">
+        Loaded: <strong>{{ state.filename }}</strong>
+        {% if state.original_text %}
+        — {{ state.original_text | length }} characters extracted
+        {% endif %}
+      </p>
+      {% endif %}
+    </div>
+
+    <!-- Dynamic workflow: candidates → obfuscated → rehydrated -->
+    <div id="workflow-content">
+      {% if state.original_text is not none %}
+        {% include "partials/candidates.html" %}
+      {% endif %}
+      {% if state.sanitised_text is not none %}
+        {% include "partials/obfuscated.html" %}
+      {% endif %}
+    </div>
+
+  </main>
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="sidebar-col">
+    {% include "partials/dictionary.html" %}
+    {% include "partials/patterns.html" %}
+  </aside>
+
+</div><!-- /layout -->
+
+</body>
+</html>

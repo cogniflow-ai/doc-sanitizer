@@ -1,0 +1,22 @@
+{% if preview is not none %}
+<div class="success-msg" style="margin-bottom:10px">
+  ✓ Rehydration complete.
+</div>
+<div class="text-display-wrap" style="max-height:200px">
+  <pre>{{ preview | e }}{% if preview | length >= 3000 %}…(truncated){% endif %}</pre>
+</div>
+<div class="action-row" style="margin-top:8px">
+  <a href="/download/rehydrated" class="btn btn-primary btn-sm">↓ Download rehydrated.txt</a>
+</div>
+
+{% else %}
+<div class="success-msg" style="margin-bottom:10px">
+  ✓ File rehydrated successfully.
+  {% if filename %}<br>Source: <strong>{{ filename }}</strong>{% endif %}
+</div>
+<div class="action-row">
+  <a href="/download/rehydrated" class="btn btn-primary btn-sm">
+    ↓ Download rehydrated{{ ext }}
+  </a>
+</div>
+{% endif %}
