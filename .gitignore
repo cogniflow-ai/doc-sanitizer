@@ -46,6 +46,7 @@ htmlcov/
 # IDE / OS
 .vscode/
 .idea/
+.claude/
 .DS_Store
 Thumbs.db
 *.swp
@@ -56,3 +57,12 @@ Thumbs.db
 /sanitised.txt
 /obfuscated.html
 /sanitized/
+
+# generated demo artifacts (the .docx fixture is regenerated on demand;
+# masked/rehydrated outputs are byproducts)
+/clients/sample.docx
+/clients/sample.masked.docx
+/clients/sample.rehydrated.docx
+/clients/lib_sample.masked.docx
+/clients/lib_sample.rehydrated.docx
+/clients/lib_dictionary.json
