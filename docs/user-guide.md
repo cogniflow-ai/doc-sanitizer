@@ -48,41 +48,108 @@ three.
 
 ### 1.1 Download a pre-built binary (recommended)
 
-Pre-built `.exe` (Windows) and `.app` (macOS) live on the GitHub Releases
-page:
+> **TL;DR — direct download links for the latest version (v0.2.0):**
+>
+> - Windows: <https://github.com/cogniflow-ai/doc-sanitizer/releases/download/v0.2.0/doc-sanitizer.exe>
+> - macOS:  <https://github.com/cogniflow-ai/doc-sanitizer/releases/download/v0.2.0/doc-sanitizer.app.zip>
+>
+> Click the link for your operating system and the file will download.
+> If you prefer to browse, follow the step-by-step instructions below.
 
-> **https://github.com/cogniflow-ai/doc-sanitizer/releases**
+#### How to find the downloads on GitHub (step-by-step)
 
-Click the latest release (e.g. `v0.2.0`) and download the right asset:
+The pre-built application files do **not** appear on the main code page —
+they live on a separate **Releases** page. To find them:
 
-| OS          | Asset                       |
-|-------------|-----------------------------|
-| Windows 10/11 | `doc-sanitizer.exe`       |
-| macOS 11+   | `doc-sanitizer.app.zip`     |
+1. **Open the project page:**
+   <https://github.com/cogniflow-ai/doc-sanitizer>
 
-#### Windows
+2. **Look at the right-hand sidebar** of the project page. You'll see a
+   section titled **"Releases"** with a small box showing the latest
+   release name (currently `v0.2.0`). Click on it.
 
-1. Download `doc-sanitizer.exe` (≈ 33 MB).
-2. (Optional) Move it to a permanent location, e.g. `C:\Tools\doc-sanitizer.exe`.
-3. The first time you run it, **SmartScreen will warn you** ("Windows
-   protected your PC"). The binary is unsigned. If you trust the source:
-   - Click **More info** → **Run anyway**.
-4. Open a Command Prompt or PowerShell:
-   ```cmd
-   C:\Tools\doc-sanitizer.exe version
-   ```
-   Expected output: `0.2.0`.
+   *Alternative:* add `/releases` to the end of the URL — e.g.
+   <https://github.com/cogniflow-ai/doc-sanitizer/releases>.
 
-#### macOS
+3. **Pick the latest release** (the one at the top, marked **"Latest"**).
 
-1. Download `doc-sanitizer.app.zip` (≈ 30 MB).
-2. Unzip → you get `doc-sanitizer.app`.
-3. Move it to `/Applications` if you like.
-4. The first time you double-click it, macOS will refuse to launch it
-   (Gatekeeper, unsigned app). Workaround:
-   - **Right-click** `doc-sanitizer.app` → **Open**
-   - Click **Open** in the confirmation dialog
-   - Subsequent launches are unblocked.
+4. **Scroll down to the section called "Assets"** at the bottom of the
+   release. You'll see a list of downloadable files. Click the one for
+   your operating system:
+
+   | Your computer       | File to click                    | Size    |
+   |---------------------|----------------------------------|---------|
+   | Windows 10 / 11     | `doc-sanitizer.exe`              | ≈ 33 MB |
+   | macOS (11 or newer) | `doc-sanitizer.app.zip`          | ≈ 30 MB |
+
+   The two `Source code` entries underneath are *not* the application —
+   ignore them unless you're a developer.
+
+5. The browser will save the file to your usual Downloads folder.
+
+> **Why isn't there a "Download" button on the project's main page?**
+> GitHub separates *source code* (the Code tab — for developers) from
+> *application releases* (the Releases page — for end users). Your
+> downloads always live on the Releases page.
+
+#### Windows — what to do after the file downloads
+
+1. **Find the file** in your Downloads folder. It will be called
+   `doc-sanitizer.exe`.
+
+2. **(Recommended)** Move it somewhere permanent, e.g. create a folder
+   `C:\Tools\` and drag `doc-sanitizer.exe` into it. Why: if you leave it
+   in Downloads you might accidentally delete it during a clean-up.
+
+3. **Double-click `doc-sanitizer.exe`.** The first time, Windows will
+   show a blue warning screen titled **"Windows protected your PC"**.
+   This happens because the file is not digitally "signed" — it doesn't
+   mean it's broken. To proceed:
+   - Click the small text link **"More info"** in the warning dialog.
+   - A new button **"Run anyway"** appears — click it.
+   - Subsequent launches don't show this warning.
+
+4. **What happens next** — a black command-prompt window pops up. The
+   first launch generates an encryption key and a security certificate
+   (one-time setup, takes about a second). To use Cogniflow Privacy
+   Filter, see §3 (Web UI) or §4 (CLI) below.
+
+> **If you don't see anything happen** when you double-click the .exe:
+> right-click it → **Run as administrator** the first time, just to
+> rule out a permission issue. Subsequent launches don't need
+> administrator rights.
+
+#### macOS — what to do after the file downloads
+
+1. **Find the file** in your Downloads folder. It will be called
+   `doc-sanitizer.app.zip`.
+
+2. **Double-click the .zip** to extract it. You should now see a file
+   called `doc-sanitizer.app` (the `.app` extension may be hidden, but
+   the icon will look like a normal Mac application).
+
+3. **(Recommended)** Drag `doc-sanitizer.app` into your **Applications**
+   folder so it's easy to find later.
+
+4. **Double-click `doc-sanitizer.app`.** The first time, macOS will
+   refuse to open it with a message like **"doc-sanitizer.app cannot be
+   opened because the developer cannot be verified"**. This happens
+   because the app is not "signed" with an Apple developer certificate
+   — it doesn't mean it's broken. To proceed:
+   - Open **Finder**, find the app, then **right-click** (or
+     Control-click) on `doc-sanitizer.app`.
+   - In the menu that pops up, click **Open**.
+   - A new dialog appears with an **Open** button — click it. This time
+     macOS will let it run.
+   - Subsequent launches (regular double-click) work without warnings.
+
+> **If macOS shows "doc-sanitizer.app is damaged and can't be opened":**
+> open the **Terminal** app (in Applications → Utilities) and run:
+> ```bash
+> xattr -d com.apple.quarantine /Applications/doc-sanitizer.app
+> ```
+> Then double-click the app again. This removes a "downloaded from the
+> internet" marker that some macOS versions over-interpret.
 
 #### Linux / "I want to run from source"
 
