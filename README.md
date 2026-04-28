@@ -146,6 +146,16 @@ All except `/v1/health` require `Authorization: Bearer <token>`.
 
 ---
 
+## Documentation
+
+| Audience       | Doc                                          |
+|----------------|----------------------------------------------|
+| End users      | [`docs/user-guide.md`](docs/user-guide.md)         |
+| Developers     | [`docs/developer-guide.md`](docs/developer-guide.md) |
+| Design notes   | [`DECISIONS.md`](DECISIONS.md)                |
+
+---
+
 ## Examples
 
 | Path                                              | What                                                                  |
